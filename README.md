@@ -1,30 +1,13 @@
-## Setup kubernetes cluster 
+## Distributing data
 
-logging in & setting the default project
+- create a data disk in GCP project 
+- populate the disk with data by attaching it to a gcp vm 
+- create a pv and a pvc in kubernetes (this is done with commands in create_kubernetes_cluster.sh): 
 ```
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project mit-neurogen-spring22
+kubectl --namespace jhub apply -f data_pv.yaml
+kubectl --namespace jhub apply -f data_pvc.yaml
+kubectl --namespace jhub get pvc
 ```
-
-Creates kubernete cluster, launching a node pool, download jupyterhub helm chart, and create deployment
-```
-create_kubernetes_cluster.sh  
-```
-
-
-
-## Updating the docker image after deployment
-
-If you want to make updates to the docker image used, see `dockerfiles/Dockerfile`
-Once you have updated/pushed this docker image, update the docker path and tag in config.canvas.yaml.
-
-After you have updated the docker image and the config.canvas.yaml file, deploy the update to kubernets by running: 
-```
-./update.canvas.sh
-```
-
-## Distributing data to students 
 
 All users will have read access to the data disk:
 
@@ -43,16 +26,27 @@ gcloud compute instances detach-disk instance-1  --disk neurogen-data-pv-persist
 ```
 
 
-## Creating assignments
+## Setup kubernetes cluster 
 
-Go to nbgituller:
+logging in & setting the default project
+```
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project [your-gcp-project-name]
+```
 
+Creates kubernete cluster, launching a node pool, download jupyterhub helm chart, and create deployment
+```
+create_kubernetes_cluster.sh  
+```
 
-https://jupyterhub.github.io/nbgitpuller/link?tab=canvas&hub=http://35.202.182.95&repo=https://github.com/KellisLab/neurogen-spring22.git&branch=main
+## Updating the docker image after deployment
 
-Paste in the path to the jupyter notebook (i.e. "assignments/assignment1.ipynb")  
+If you want to make updates to the docker image used, see `dockerfiles/Dockerfile`
+Once you have updated/pushed this docker image, update the docker path and tag in config.yaml.
 
-Copy the resultant URL into canvas assignment: SubmissionType External Tool  
-Enter or find an External Tool URL (copy from nbgitpuller)  
-check load this tool in a new tab.  
+After you have updated the docker image and the config.yaml file, deploy the update to kubernets by running: 
+```
+./redeploy.sh
+```
 
