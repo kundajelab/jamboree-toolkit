@@ -1,0 +1,18 @@
+name: assignment_1
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - ipykernel
+  - numpy
+  - scipy
+  - matplotlib
+  - ipython
+  - pandas
+  - sympy
+  - nose
+  - seaborn
+  - plotly==5.5.0
+  - scikit-learn
+  - nbformat

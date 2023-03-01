@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: neurogen-data-pv
+spec:
+  storageClassName: ""
+  claimRef:
+    name: neurogen-data-pvc
+    namespace: jhub
+  capacity:
+    storage: 40G
+  accessModes:
+    - ReadOnlyMany
+  gcePersistentDisk:
+    pdName: neurogen-data-pv-persistentdisk
+    fsType: ext4
+

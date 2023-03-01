@@ -1,0 +1,44 @@
+ARG PARENT_DOCKER
+FROM $PARENT_DOCKER
+
+COPY env.yml /tmp/env.yml
+
+# Install all OS dependencies for fully functional notebook server
+USER root
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    git \
+    nano-tiny \
+    tzdata \
+    unzip \
+    vim-tiny \
+    openssh-client \
+    inkscape \
+    libsm6 \
+    libxext-dev \
+    libxrender1 \
+    lmodern \
+    netcat \
+    texlive-xetex \
+    texlive-fonts-recommended \
+    texlive-plain-generic \
+    fonts-dejavu \
+    unixodbc \
+    unixodbc-dev \
+    gfortran \
+    gcc \
+    libreadline && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
+
+# R studio
+# RUN mamba install rstudio && \
+#     mamba install -c conda-forge jupyter-rsession-proxy
+USER ${NB_UID}
+RUN mamba env create -f /tmp/env.yml && \
+    mamba clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+RUN echo "conda activate rstudio" >> ~/.bashrc

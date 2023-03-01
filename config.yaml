@@ -1,0 +1,54 @@
+proxy:
+  secretToken: "cdc823015efcd715b435a79f467aba5ffbd56fa6caa53f0a9abee0fe361eacc9"
+  https:
+    enabled: false
+  service:
+    loadBalancerIP: 34.66.185.235
+
+scheduling:
+  userScheduler:
+    enabled: true
+  podPriority:
+    enabled: true
+  userPlaceholder:
+    enabled: true
+    replicas: 3
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: require
+      
+singleuser:
+  memory:
+    limit: 30G
+    guarantee: 1G
+  cpu:
+    limit: 8
+    guarantee: 1
+  image:
+    name: kellislab/neurogen-spring22
+    tag: ps3_v5
+  storage:
+    capacity: 30Gi
+  defaultUrl: "/lab"
+  extraEnv:
+    JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
+
+hub:
+  config:
+    Authenticator:
+      admin_users:
+        - idan
+        - jin
+      allowed_users:
+        - user1
+        - user2
+	- user3
+    DummyAuthenticator:
+      password: jamboree
+    JupyterHub:
+      authenticator_class: dummy
+
+cull:
+  enabled: true
+  timeout: 1800
+  every: 180
