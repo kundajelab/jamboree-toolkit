@@ -30,7 +30,7 @@ gcloud beta container node-pools create user-pool \
        --cluster kbe-mit-neurogen-2022
 
 ## Install jupyterhub
-#openssl rand -hex 32
+openssl rand -hex 32
 ## add secretToken to config.yaml
 helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
@@ -41,11 +41,11 @@ kubectl get namespace
 
 #add data volume
 #note: first manually create a disk for data store, which is reference in data_pv.yaml
-# kubectl --namespace jhub apply -f data_pv.yaml 
-# kubectl --namespace jhub apply -f data_pvc.yaml 
-# kubectl --namespace jhub get pvc
+kubectl --namespace jhub apply -f data_pv.yaml 
+kubectl --namespace jhub apply -f data_pvc.yaml
+kubectl --namespace jhub get pvc
 
-helm upgrade --install --cleanup-on-fail --namespace jhub  --version 1.2.0 --values config_canvas.yaml --set global.safeToShowValues=true jhub jupyterhub/jupyterhub --timeout 30m
+helm upgrade --install --cleanup-on-fail --namespace jhub  --version 1.2.0 --values config.yaml --set global.safeToShowValues=true jhub jupyterhub/jupyterhub --timeout 30m
 
 
 ##Your release is named jhub and installed into the namespace jhub.
